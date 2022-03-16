@@ -1,36 +1,38 @@
 #include <EEPROM.h>
 
+// Pin constants
 constexpr byte moisture_sensor_pin{0};
 constexpr byte moisture_power_pin{0};
-
 constexpr byte rain_valve_pin{0};
 constexpr byte tap_valve_pin{0};
-
 constexpr byte flow_sensor_pin{0};
 constexpr byte flow_power_pin{0};
 
+// EEPROM constants
 constexpr int eeprom_address_moisture_level{0};
 constexpr int eeprom_size{1};
 
+// Conversion constants
 constexpr double moisture_diff_to_flow_ratio{0.5};
-
 constexpr int microseconds_to_seconds{1000000};
 
-// Should probably be 0 or a very small number
-constexpr double minimum_water_flow_rate{0};
+// Watering constants
+constexpr double minimum_water_flow_rate{0}; // Should probably be 0 or a very small number
 
+// Water flow variables
 volatile int flow_frequency{0};
 double total_flow{0};
 double target_flow{0};
 unsigned long cloop_time{0};
 
+// Type that represents the state of the system
 enum class State {
   watering,
   sensing,
   sleeping
 };
 
-
+// Type that represents the sub-state of the system while the overall state is watering
 enum class WateringState {
   rain,
   tap,
@@ -38,7 +40,7 @@ enum class WateringState {
 };
 
 // Track the current status
-State system_status;
+State system_status{State::sensing};
 
 // Track the watering status
 WateringState watering_status{WateringState::none};
