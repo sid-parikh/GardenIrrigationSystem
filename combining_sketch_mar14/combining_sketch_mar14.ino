@@ -1,4 +1,8 @@
 #include <EEPROM.h>
+#include <cstdint>
+
+constexpr byte moisture_sensor_pin{0};
+constexpr byte moisture_power_pin{0};
 
 // Pin constants
 constexpr byte moisture_sensor_pin{21};
