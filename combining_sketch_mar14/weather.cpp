@@ -11,7 +11,7 @@ String sensorReadings;
 float sensorReadingsArr[3];
 
 void wifiSetup() {
-  WiFi.mode(WIFI_STA)
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
   int i = 0;
@@ -29,30 +29,6 @@ void wifiSetup() {
     Serial.print("Connected to WiFi network with IP Address: ");
     Serial.println(WiFi.localIP());
   }
-}
-
-int[] getPops() {
-   if(WiFi.status()== WL_CONNECTED){
-              
-      sensorReadings = httpGETRequest(serverName);
-      Serial.println(sensorReadings);
-      JSONVar myObject = JSON.parse(sensorReadings);
-  
-      // JSON.typeof(jsonVar) can be used to get the type of the var
-      if (JSON.typeof(myObject) == "undefined") {
-        Serial.println("Parsing input failed!");
-      }
-
-      // Get an array of pops
-      int pop[myObject["hourly"].length()]{};
-      for (int i = 0; i < myObject["hourly"].length(); i++) {
-        pop[i] = static_cast<int>(stoi(myObject["hourly"][i]["pop"]) * 100);
-      }
-      
-    }
-    else {
-      Serial.println("WiFi Disconnected");
-    }
 }
 
 String httpGETRequest(const char* serverName) {
@@ -80,4 +56,39 @@ String httpGETRequest(const char* serverName) {
   http.end();
 
   return payload;
+}
+
+int getMinutesToWait() {
+   if(WiFi.status()== WL_CONNECTED){
+              
+      sensorReadings = httpGETRequest(serverName);
+      Serial.println(sensorReadings);
+      JSONVar myObject = JSON.parse(sensorReadings);
+  
+      // JSON.typeof(jsonVar) can be used to get the type of the var
+      if (JSON.typeof(myObject) == "undefined") {
+        Serial.println("Parsing input failed!");
+      }
+
+      // Get an array of pops
+      int pop[48]{};
+      for (int i = 0; i < myObject["hourly"].length(); i++) {
+        pop[i] = (int) (double(myObject["hourly"][i]["pop"]) * 100);
+      }
+
+      // Pops is 48 ints of percentages.
+      // We now need to figure out whether to water or wait. Return 0 to water now, or else the number of minutes to wait. 
+
+      // First step is to figure out when it is most likely to rain next, if at all.
+      int first = -1;
+      for (int i = 0; i < 48; i++) {
+        if (pop[i] > 50) {
+          
+        }
+      }
+
+      
+  } else {
+      Serial.println("WiFi Disconnected");
+  }
 }
