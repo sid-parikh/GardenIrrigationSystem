@@ -1,0 +1,11 @@
+{
+    "name": "GardenIrrigation",
+    "stubs": {},
+    "dev-packages": {
+        "micropy-cli": "*"
+    },
+    "packages": {},
+    "config": {
+        "vscode": true
+    }
+}

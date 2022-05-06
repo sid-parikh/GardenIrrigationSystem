@@ -1,0 +1,15 @@
+{
+    "python.linting.enabled": true,
+    "python.jediEnabled": false,
+
+    // Loaded Stubs: 
+    "python.autoComplete.extraPaths": [".micropy\\GardenIrrigation"],
+    "python.autoComplete.typeshedPaths":  [".micropy\\GardenIrrigation"],
+    "python.analysis.typeshedPaths":  [".micropy\\GardenIrrigation"],
+
+    "python.linting.pylintEnabled": true,
+    "python.languageServer": "Microsoft",
+    "python.analysis.extraPaths": [
+        ".micropy\\GardenIrrigation"
+    ]
+}
