@@ -2,10 +2,10 @@
 #include <cstdint>
 
 // Pin constants
-constexpr byte moisture_sensor_pin{21};
+constexpr byte moisture_sensor_pin{23};
 constexpr byte moisture_power_pin{19};
-constexpr byte rain_valve_pin{0};
-constexpr byte tap_valve_pin{0};
+constexpr byte rain_valve_pin{22};
+constexpr byte tap_valve_pin{21};
 constexpr byte flow_sensor_pin{0};
 constexpr byte flow_power_pin{0};
 
@@ -23,9 +23,7 @@ constexpr double minimum_water_flow_rate{0}; // Should probably be 0 or a very s
 // byte minimum_moisture)leve
 
 // Water flow variables
-volatile int flow_frequency {
-  0
-};
+volatile int flow_frequency {0};
 double total_flow{0};
 double target_flow{0};
 unsigned long cloop_time{0};
