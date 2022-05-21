@@ -6,8 +6,8 @@ constexpr byte moisture_sensor_pin{23};
 constexpr byte moisture_power_pin{19};
 constexpr byte rain_valve_pin{22};
 constexpr byte tap_valve_pin{21};
-constexpr byte flow_sensor_pin{0};
-constexpr byte flow_power_pin{0};
+constexpr byte flow_sensor_pin{18};
+constexpr byte flow_power_pin{5};
 
 // EEPROM constants
 constexpr int eeprom_address_moisture_level{0};
@@ -15,7 +15,7 @@ constexpr int eeprom_size{1};
 
 // Conversion constants
 constexpr double moisture_diff_to_flow_ratio{0.5};
-constexpr long sleep_duration_microseconds{0.01 * 60 * 1000000};
+constexpr long sleep_duration_microseconds{0.5 * 60 * 1000000};
 
 // Watering constants
 constexpr double minimum_water_flow_rate{0}; // Should probably be 0 or a very small number
@@ -159,6 +159,9 @@ State water() {
         // Convert L/min to L/sec and then add to total flow by mutiplying flow rate in L/sec by the time in seconds
         total_flow += ((get_flow_rate(current_time) / 60.0) * ((current_time - cloop_time) / 1000.0));
 
+        Serial.print("\t Tot. Flow");
+        Serial.println(total_flow);
+
         if (check_target_met_and_close(rain_valve_pin)) {
           // Target has been met; enter sleep state
           watering_status = WateringState::none;
@@ -176,6 +179,7 @@ State water() {
 
         return State::watering;
       }
+      return State::watering;
       break;
   }
 
@@ -196,7 +200,7 @@ State sense() {
   delay(2000);
 
   // Read ESP32 Flash memory for minimum moisture level
-  byte minimum_moisture_level = EEPROM.read(eeprom_address_moisture_level);
+  byte minimum_moisture_level = 10; //EEPROM.read(eeprom_address_moisture_level);
 
   // If the moisture level is below the minimum, switch to watering mode
   if (moisture_level < minimum_moisture_level) {
@@ -204,7 +208,8 @@ State sense() {
     /* TODO: add weather checking */
 
     // Calculate target watering amount
-    target_flow = (minimum_moisture_level - moisture_level) * moisture_diff_to_flow_ratio;
+    // target_flow = (minimum_moisture_level - moisture_level) * moisture_diff_to_flow_ratio;
+    target_flow = 0.1;
 
     // Enter watering mode
     return State::watering;
