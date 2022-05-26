@@ -15,7 +15,7 @@ constexpr int eeprom_size{1};
 
 // Conversion constants
 constexpr double moisture_diff_to_flow_ratio{0.5};
-constexpr long sleep_duration_microseconds{0.5 * 60 * 1000000};
+constexpr double sleep_duration_microseconds{0.5 * 60 * 1000000};
 
 // Watering constants
 constexpr double minimum_water_flow_rate{0}; // Should probably be 0 or a very small number
